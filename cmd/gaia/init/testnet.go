@@ -98,8 +98,6 @@ Example:
 
 var (
 	testnetAccountList = []string{
-		"depart neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
-		"country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple",
 		"one neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"two neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"three neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
@@ -107,6 +105,8 @@ var (
 		"five neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"six neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"round beach biology badge loyal guilt trust resource taste want candy open scrub raw thing true under another crowd grab muscle finish afford fox",
+		"depart neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
+		"country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple",
 		"owner antique cheap ticket frozen icon pluck salmon mushroom machine lock cream recall blind deliver change high hurt ensure robust sting coin sell scare",
 		"owner hamster local fork palm excite soul exercise frequent dream nice comic design maze harsh clog start find umbrella battle live priority tuna reform",
 		"snack frost detect denial must mobile fine custom anchor improve fashion mask guide escape defense answer dismiss code head display prepare capable bacon nose",
@@ -278,7 +278,7 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 			valPubKeys[i],
 			sdk.NewCoin(sdk.DefaultBondDenom, valTokens),
 			staking.NewDescription(nodeDirName, "", "", ""),
-			staking.NewCommissionMsg(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
+			staking.NewCommissionMsg(sdk.NewDecWithPrec(5, 1), sdk.NewDecWithPrec(5, 1), sdk.NewDec(0)),
 			sdk.OneInt(),
 		)
 		kb, err := keys.NewKeyBaseFromDir(clientDir)
