@@ -98,6 +98,8 @@ Example:
 
 var (
 	testnetAccountList = []string{
+		"depart neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
+		"country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple",
 		"one neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"two neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"three neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
@@ -168,14 +170,14 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 	//	"address": "cosmos1hg40dv5e237qy28vtyum52ygke32ez35hm307h",
 	//	"pubkey": "cosmospub1addwnpepqvc67unsmp9r6vayp20xwcsmph0s765m63k43j3sagd24w98vsejz3n2vcw"
 	//}
-	accs = addAccount("cosmos1hg40dv5e237qy28vtyum52ygke32ez35hm307h", 6 * 1e9, accs)
+	//accs = addAccount("cosmos1hg40dv5e237qy28vtyum52ygke32ez35hm307h", 6 * 1e9, accs)
 
 	//{
 	//	"address": "cosmos1geyy4wtak2q9effnfhze9u4htd8yxxmagdw3q0",
 	//	"pubkey": "cosmospub1addwnpepqdcv2dpjxurg4kwca0e8mmf03pjerfe4vl29kfgvydpx9wype9z4xatgu3m",
 	//	"mnemonic": "country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple"
 	//}
-	accs = addAccount("cosmos1geyy4wtak2q9effnfhze9u4htd8yxxmagdw3q0", 9 * 1e9, accs)
+	//accs = addAccount("cosmos1geyy4wtak2q9effnfhze9u4htd8yxxmagdw3q0", 9 * 1e9, accs)
 
 	// generate private keys, node IDs, and initial transactions
 	for i := 0; i < numValidators; i++ {
