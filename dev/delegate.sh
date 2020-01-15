@@ -20,3 +20,9 @@ gaiacli query staking validators
 #6000000009303469
 
 # 6000000011260675
+
+
+##local
+gaiacli tx staking delegate evavaloper1hg40dv5e237qy28vtyum52ygke32ez35xexq98 380000000000stake --from v0 --fees 2stake -yes -b block
+
+
