@@ -11,26 +11,19 @@ START=$(date)
 
 queryRewards() {
     res=$(${CLIENT_NAME} query distr rewards $1 $2 --node $EVA_VALIDATOR_URL -o text)
-    a=${res/neva/}
-    string="$a"
-    array=(${string//./ })
+    array=(${res//./ })
     echo ${array[0]}
 }
 
 queryCommission() {
     res=$(${CLIENT_NAME} query distr commission $1 --node $EVA_VALIDATOR_URL -o text)
-    a=${res/neva/}
-    string="$a"
-    array=(${string//./ })
+    array=(${res//./ })
     echo ${array[0]}
 }
 
 sum() {
     sum=0
-
-    DELEGATOR_ARRAY=($(${CLIENT_NAME} query staking delegations-to $VALIDATOR \
-        --node $EVA_VALIDATOR_URL | grep delegator_address | awk '{print $2}' | sed 's/,//g' | sed 's/"//g'))
-
+    DELEGATOR_ARRAY=$1
     for delegator in ${DELEGATOR_ARRAY[@]}
     do
         rewards=$(queryRewards $delegator $VALIDATOR)
@@ -79,20 +72,20 @@ run() {
         echo ${VALIDATOR}
     fi
 
-    sumRewards1=$(sum)
+    DELEGATOR_ARRAY=($(${CLIENT_NAME} query staking delegations-to $VALIDATOR \
+        --node $EVA_VALIDATOR_URL | grep delegator_address | awk '{print $2}' | sed 's/,//g' | sed 's/"//g'))
+
+    sumRewards1=$(sum $DELEGATOR_ARRAY)
     commission1=$(queryCommission $VALIDATOR)
 
     sleep $DURATION
 
-    sumRewards2=$(sum)
+    sumRewards2=$(sum $DELEGATOR_ARRAY)
     commission2=$(queryCommission $VALIDATOR)
 
     ((commissionDelta=commission2-commission1))
     ((rewardsDelta=sumRewards2-sumRewards1))
     ((allDelta=sumRewards2-sumRewards1+commissionDelta))
-
-    DELEGATOR_ARRAY=($(${CLIENT_NAME} query staking delegations-to $VALIDATOR \
-        --node $EVA_VALIDATOR_URL | grep delegator_address | awk '{print $2}' | sed 's/,//g' | sed 's/"//g'))
 
     rate=$(${CLIENT_NAME} query staking validator $VALIDATOR  \
         --node $EVA_VALIDATOR_URL |grep rate|grep -v _|awk '{print $2}' | sed 's/,//g' | sed 's/"//g')
@@ -124,3 +117,5 @@ main() {
 }
 
 main
+
+
