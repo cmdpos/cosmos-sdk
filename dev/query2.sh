@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 date
+
+queryRewards() {
+    res=$(gaiacli query distr rewards $1 $2 --node http://18.163.89.47:20181 -o text)
+    echo ${res/neva/}
+}
+
+a=$(queryRewards eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3)
+res1=${a/neva/}
+echo $res1
+#sleep 10
+a=$(queryRewards eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3)
+res2=${a/neva/}
+echo $res2
+
+res1=13464167686233333333
+res2=13464188006633333333
+((diff=res2-res1))
+echo $diff
+
+exit
+
+
 gaiacli query distr rewards eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm  evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181 -o text
 gaiacli query distr rewards eva1pjx74f0l6nvwx857e8m5x78fepph4rrexq5dh5  evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181 -o text
 gaiacli query distr rewards eva19qv9zx0a0p2l02kcfrndv6k99wknadu04twzmv  evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181 -o text

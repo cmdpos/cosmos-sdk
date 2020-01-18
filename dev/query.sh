@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
 
+a=xxneva
+echo ${a/neva/}
+
+exit
+
+
+queryRewards() {
+    res=$(gaiacli query distr rewards $1 $2 --node http://18.163.89.47:20181 -o text)
+    echo ${res/neva/}
+}
+
 gaiacli query distr commission  evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181
 
 ########
@@ -25,28 +36,36 @@ gaiacli query distr rewards eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm evavalope
 gaiacli query distr rewards eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm  --node http://18.163.89.47:20181
 gaiacli query distr rewards eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4 evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181
 gaiacli query distr rewards eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4  --node http://18.163.89.47:20181
-gaiacli query distr commission  evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181
+gaiacli query distr commission  evavaloper18dq7anelgyaw7t9dn52249kq57js203tp9q07c --node http://18.163.89.47:20181
 gaiacli query distr community-pool   --node http://18.163.89.47:20181
 
 gaiacli query staking delegations-to evavaloper1pjx74f0l6nvwx857e8m5x78fepph4rresakmn3 --node http://18.163.89.47:20181
-gaiacli query staking delegations-to evavaloper16ls59sm5hc63h5szj3z7wv27xvw5xfn3xvvdx7 --node http://18.163.89.47:20181
+gaiacli query staking delegations-to evavaloper1wgp2hm4fvptsu7zhsxg6wpshz9udg4ysh4hfd7 --node http://18.163.89.47:20181
+gaiacli query staking delegations-to evavaloper18dq7anelgyaw7t9dn52249kq57js203tp9q07c --node http://18.163.89.47:20181
+gaiacli query distr commission  evavaloper18dq7anelgyaw7t9dn52249kq57js203tp9q07c --node http://18.163.89.47:20181
+gaiacli query staking validator evavaloper18dq7anelgyaw7t9dn52249kq57js203tp9q07c  --node http://18.163.89.47:20181
 
 
 community-pool
 
 gaiacli query account eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4 --node http://18.163.89.47:20181
+gaiacli query account eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4 --node http://34.216.217.204:20181
 
 #######################################3
 gaiacli query staking validators  --node http://18.163.89.47:20181
 gaiacli query staking pool  --node http://18.163.89.47:20181
 gaiacli query staking params  --node http://18.163.89.47:20181
 
-
+evavaloper13gwspcs5egjzzvtljtmxrcaey72d7fnuxq387n
+evavaloper18dq7anelgyaw7t9dn52249kq57js203tp9q07c
 ## 伊娃
 ## eva132q0hvhfjx84wl04ez9urnvqs3f7futq48atsw
 ## evavaloper132q0hvhfjx84wl04ez9urnvqs3f7futqr6la5t
-gaiacli query staking delegations eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4  --node http://18.163.89.47:20181
 
+gaiacli query staking delegation eva132q0hvhfjx84wl04ez9urnvqs3f7futq48atsw evavaloper132q0hvhfjx84wl04ez9urnvqs3f7futqr6la5t --node http://18.163.89.47:20181
+
+gaiacli query staking delegations eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4  --node http://18.163.89.47:20181
+gaiacli query staking validator eva1fsvvrkwvlh7084mwlpjek4vjm04enljejpl7z4  --node http://18.163.89.47:20181
 
 gaiacli query account eva132q0hvhfjx84wl04ez9urnvqs3f7futq48atsw --node http://18.163.89.47:20181
 
