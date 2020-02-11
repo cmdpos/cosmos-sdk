@@ -173,3 +173,31 @@ $ gaiacli tx set-withdraw-addr cosmos1gghjut3ccd8ay0zduzj64hwre2fxs9ld75ru9p --f
 		},
 	}
 }
+
+func GetCmdSetRecommendAddr(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "set-recommend-addr [recommend-addr]",
+		Short: "change the recommend address for rewards associated with an address",
+		Long: strings.TrimSpace(`Set the recommend address associated with a delegator address:
+
+$ gaiacli tx set-recommend-addr cosmos1gghjut3ccd8ay0zduzj64hwre2fxs9ld75ru9p --from mykey
+`),
+		Args: cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			txBldr := authtxb.NewTxBuilderFromCLI().WithTxEncoder(utils.GetTxEncoder(cdc))
+			cliCtx := context.NewCLIContext().
+				WithCodec(cdc).
+				WithAccountDecoder(cdc)
+
+			delAddr := cliCtx.GetFromAddress()
+			recommendAddr, err := sdk.AccAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgSetWithdrawAddress2(delAddr, recommendAddr)
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg}, false)
+		},
+	}
+}

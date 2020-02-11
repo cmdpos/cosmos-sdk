@@ -12,6 +12,7 @@ type (
 	Hooks  = keeper.Hooks
 
 	MsgSetWithdrawAddress          = types.MsgSetWithdrawAddress
+	MsgSetRecommendAddress         = types.MsgSetRecommendAddress
 	MsgWithdrawDelegatorReward     = types.MsgWithdrawDelegatorReward
 	MsgWithdrawValidatorCommission = types.MsgWithdrawValidatorCommission
 
