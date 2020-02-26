@@ -24,7 +24,7 @@ curl http://localhost:1317/auth/accounts/cosmos1hg40dv5e237qy28vtyum52ygke32ez35
 curl http://localhost:1317/auth/accounts/cosmos1geyy4wtak2q9effnfhze9u4htd8yxxmagdw3q0
 
 
-gaiacli query staking validators
+gaiacli query staking validators --node http://18.163.89.47:20181
 
 # vf
 # eva1qnkgg9h04v4avc79lzqj9tgdztzlw4e8454mvm
