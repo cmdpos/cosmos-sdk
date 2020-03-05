@@ -98,7 +98,11 @@ Example:
 
 var (
 	testnetAccountList = []string{
+		// eva1hg40dv5e237qy28vtyum52ygke32ez35syykpz
+		// 2c999c5afe7f0c902846e1b286fed29c5c5914998655d469568560955abe0d5d
 		"depart neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
+
+		// eva1geyy4wtak2q9effnfhze9u4htd8yxxma0jmgl6
 		"country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple",
 		"one neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
 		"two neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
