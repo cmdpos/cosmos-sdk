@@ -1,6 +1,7 @@
 package distribution
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	"github.com/cosmos/cosmos-sdk/x/distribution/tags"
@@ -11,6 +12,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) sdk.Result {
 		// NOTE msg already has validate basic run
 		switch msg := msg.(type) {
+		case types.MsgSetRecommendAddress:
+			return handleMsgSetRecommendAddress(ctx, msg, k)
 		case types.MsgSetWithdrawAddress:
 			return handleMsgModifyWithdrawAddress(ctx, msg, k)
 		case types.MsgWithdrawDelegatorReward:
@@ -25,6 +28,21 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 
 // These functions assume everything has been authenticated (ValidateBasic passed, and signatures checked)
 
+func handleMsgSetRecommendAddress(ctx sdk.Context, msg types.MsgSetRecommendAddress, k keeper.Keeper) sdk.Result {
+
+	fmt.Printf("handleMsgSetRecommendAddress\n")
+	err := k.SetWithdrawAddr(ctx, msg.DelegatorAddress, msg.RecommendAddress)
+	if err != nil {
+		return err.Result()
+	}
+
+	tags := sdk.NewTags(
+		tags.Delegator, []byte(msg.DelegatorAddress.String()),
+	)
+	return sdk.Result{
+		Tags: tags,
+	}
+}
 func handleMsgModifyWithdrawAddress(ctx sdk.Context, msg types.MsgSetWithdrawAddress, k keeper.Keeper) sdk.Result {
 
 	err := k.SetWithdrawAddr(ctx, msg.DelegatorAddress, msg.WithdrawAddress)

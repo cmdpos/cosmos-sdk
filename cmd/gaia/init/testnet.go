@@ -171,7 +171,11 @@ secret: [name vendor rose aunt lady bunker success picture rapid grace height an
 
 var (
 	testnetAccountList = []string{
+		// eva1hg40dv5e237qy28vtyum52ygke32ez35syykpz
+		// 2c999c5afe7f0c902846e1b286fed29c5c5914998655d469568560955abe0d5d
 		"depart neither they audit pen exile fire smart tongue express blanket burden culture shove curve address together pottery suggest lady sell clap seek whisper",
+
+		// eva1geyy4wtak2q9effnfhze9u4htd8yxxma0jmgl6
 		"country live width exotic behind mad belt bachelor later outside forget rude pudding material orbit shoot kind curve endless prosper make exotic welcome maple",
 		"name vendor rose aunt lady bunker success picture rapid grace height antique judge abuse apology teach usual kangaroo fossil glimpse series spread rail polar",
 		"motor always goose dune card scrub transfer veteran trick immense eight enrich jewel left denial cool acid profit good siren negative leopard early mechanic",

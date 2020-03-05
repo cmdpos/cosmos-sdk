@@ -6,7 +6,7 @@ import (
 )
 
 // Verify interface at compile time
-var _, _, _ sdk.Msg = &MsgSetWithdrawAddress{}, &MsgWithdrawDelegatorReward{}, &MsgWithdrawValidatorCommission{}
+var _, _, _, _ sdk.Msg = &MsgSetWithdrawAddress{}, &MsgSetRecommendAddress{}, &MsgWithdrawDelegatorReward{}, &MsgWithdrawValidatorCommission{}
 
 // msg struct for changing the withdraw address for a delegator (or validator self-delegation)
 type MsgSetWithdrawAddress struct {
@@ -14,12 +14,14 @@ type MsgSetWithdrawAddress struct {
 	WithdrawAddress  sdk.AccAddress `json:"withdraw_address"`
 }
 
+
 func NewMsgSetWithdrawAddress(delAddr, withdrawAddr sdk.AccAddress) MsgSetWithdrawAddress {
 	return MsgSetWithdrawAddress{
 		DelegatorAddress: delAddr,
 		WithdrawAddress:  withdrawAddr,
 	}
 }
+
 
 func (msg MsgSetWithdrawAddress) Route() string { return ModuleName }
 func (msg MsgSetWithdrawAddress) Type() string  { return "set_withdraw_address" }
@@ -45,6 +47,49 @@ func (msg MsgSetWithdrawAddress) ValidateBasic() sdk.Error {
 	}
 	return nil
 }
+
+
+//================
+
+type MsgSetRecommendAddress struct {
+	DelegatorAddress sdk.AccAddress `json:"delegator_address"`
+	RecommendAddress  sdk.AccAddress `json:"recommend_address"`
+}
+
+func NewMsgSetWithdrawAddress2(delAddr, withdrawAddr sdk.AccAddress) MsgSetRecommendAddress {
+	return MsgSetRecommendAddress{
+		DelegatorAddress: delAddr,
+		RecommendAddress:  withdrawAddr,
+	}
+}
+
+func (msg MsgSetRecommendAddress) Route() string { return ModuleName }
+func (msg MsgSetRecommendAddress) Type() string  { return "set_recommend_address" }
+
+
+// Return address that must sign over msg.GetSignBytes()
+func (msg MsgSetRecommendAddress) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{sdk.AccAddress(msg.DelegatorAddress)}
+}
+
+// get the bytes for the message signer to sign on
+func (msg MsgSetRecommendAddress) GetSignBytes() []byte {
+	bz := MsgCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// quick validity check
+func (msg MsgSetRecommendAddress) ValidateBasic() sdk.Error {
+	if msg.DelegatorAddress.Empty() {
+		return ErrNilDelegatorAddr(DefaultCodespace)
+	}
+	if msg.RecommendAddress.Empty() {
+		return ErrNilWithdrawAddr(DefaultCodespace)
+	}
+	return nil
+}
+//================
+
 
 // msg struct for delegation withdraw from a single validator
 type MsgWithdrawDelegatorReward struct {
