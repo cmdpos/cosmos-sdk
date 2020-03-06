@@ -151,7 +151,9 @@ func (msg MsgCreateValidator) ValidateBasic() sdk.Error {
 
 // MsgEditValidator - struct for editing a validator
 type MsgEditValidator struct {
-	Description
+	//Description
+	Description       Description    `json:"description"`
+
 	ValidatorAddress sdk.ValAddress `json:"address"`
 
 	// We pass a reference to the new commission rate and min self delegation as it's not mandatory to

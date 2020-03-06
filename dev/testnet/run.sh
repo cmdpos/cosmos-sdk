@@ -4,7 +4,7 @@
 
 ./testnet.sh -i -s -n 4
 
-nohup gaiacli rest-server --node tcp://localhost:10157 &
+#nohup gaiacli rest-server --node tcp://localhost:10157 &
 
 
 for ((;;)) do

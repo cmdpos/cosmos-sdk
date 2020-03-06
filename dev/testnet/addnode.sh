@@ -47,6 +47,7 @@ fi
 NODE_ID=node${INPUT_INDEX}
 let p2p_port=${BASE_PORT_PREFIX}+${INPUT_INDEX}*100+${P2P_PORT_SUFFIX}
 let rpc_port=${BASE_PORT_PREFIX}+${INPUT_INDEX}*100+${RPC_PORT_SUFFIX}
+((rest_port = BASE_PORT_PREFIX + INPUT_INDEX * 100 + REST_PORT_SUFFIX))
 
 # overwrite default ones
 if [ ! -z ${INPUT_RPCPORT} ]; then
@@ -113,6 +114,7 @@ function start {
     echo "start new node..."
     p2pport=$1
     rpcport=$2
+    restport=$4
     seednode=$3
 
     echo "${BIN_NAME} --home ${COSMOS_NET_CACHE}/${NODE_ID}/gaiad  start --p2p.laddr tcp://${IP}:${p2pport} --p2p.seeds ${seednode} --rpc.laddr tcp://${IP}:${rpcport}"
@@ -122,9 +124,10 @@ function start {
     --p2p.laddr tcp://${IP}:${p2pport} \
     --p2p.seeds ${seednode} \
     --p2p.addr_book_strict=false\
+    --rest.laddr tcp://${IP}:${restport}\
     --rpc.laddr tcp://${IP}:${rpcport} > ${COSMOS_NET_CACHE}/${BIN_NAME}.${NODE_ID}.log 2>&1 &
 
     echo "start new node done"
 }
 
-start ${p2p_port} ${rpc_port} ${seed_addr}
+start ${p2p_port} ${rpc_port} ${seed_addr} ${rest_port}

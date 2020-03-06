@@ -64,6 +64,7 @@ function start {
     --p2p.laddr tcp://${IP}:${seedp2pport} \
     --p2p.seed_mode=true --p2p.addr_book_strict=false \
     --log_level "main:info,state:info,*:error" \
+    --rest.laddr tcp://${IP}:${seedrestport} \
     --rpc.laddr tcp://${IP}:${seedrpcport} > ${COSMOS_NET_CACHE}/${BIN_NAME}.${index}.log 2>&1 &
 
     seed=$(${COSMOS_BIN}/${BIN_NAME} tendermint show-node-id --home ${COSMOS_NET_CACHE}/node${index}/${BIN_NAME})
@@ -77,6 +78,8 @@ function start {
         let p2pport=${BASE_PORT_PREFIX}+${index}*100+${P2P_PORT_SUFFIX}
         let rpcport=${BASE_PORT_PREFIX}+${index}*100+${RPC_PORT_SUFFIX}
 
+        ((restport = BASE_PORT_PREFIX + index * 100 + REST_PORT_SUFFIX))
+
         echo "${BIN_NAME} --home ${COSMOS_NET_CACHE}/node${index}/gaiad  start --p2p.laddr tcp://${IP}:${p2pport} --p2p.seeds ${seed}@${IP}:${seedp2pport} --p2p.addr_book_strict=false  --rpc.laddr tcp://${IP}:${rpcport}"
 
         nohup ${COSMOS_BIN}/${BIN_NAME} start \
@@ -85,6 +88,7 @@ function start {
         --p2p.seeds ${seed}@${IP}:${seedp2pport} \
         --log_level "main:info,state:info,*:error" \
         --p2p.addr_book_strict=false \
+        --rest.laddr tcp://${IP}:${restport} \
         --rpc.laddr tcp://${IP}:${rpcport} > ${COSMOS_NET_CACHE}/${BIN_NAME}.${index}.log 2>&1 &
     done
     echo "start node done"

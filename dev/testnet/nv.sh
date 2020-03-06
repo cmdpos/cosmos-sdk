@@ -4,14 +4,7 @@
 
 index=$1
 
-gaiacli keys add node${index} -y --home cache/node${index}/gaiacli
-toAddr=$(gaiacli keys show node${index} -a --home cache/node${index}/gaiacli)
 valPubkey=$(gaiad tendermint show-validator --home cache/node${index}/gaiacli)
-
-
-gaiacli tx send $toAddr 10000000000neva --from=node0 -b block --yes --chain-id testchain --node localhost:10057
-
-sleep 10
 
 gaiacli tx staking create-validator --amount 2000000000neva \
     --pubkey ${valPubkey} \
