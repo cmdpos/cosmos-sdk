@@ -11,7 +11,7 @@ CLI_HOME="--home ${CUR_DIR}/cache/node${nodeid}/gaiacli"
 CHAIN_NODE="--node tcp://localhost:10${nodeid}57"
 
 echo "=============query staking validators================="
-${CLI_NAME} query staking validators ${CLI_HOME} --chain-id testchain
+${CLI_NAME} query staking validators ${CLI_HOME} --chain-id testchain --node tcp://localhost:10057
 #${CHAIN_NODE}
 
 for ((index=0; index<10; index++)) do

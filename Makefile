@@ -75,6 +75,8 @@ ci: tools install test_cover lint test
 install: update_gaia_lite_docs
 	go install $(BUILD_FLAGS) ./cmd/gaia/cmd/gaiad
 	go install $(BUILD_FLAGS) ./cmd/gaia/cmd/gaiacli
+	cp /Users/oak/go/bin/gaiad /Users/oak/go/bin/35gaiad
+	cp /Users/oak/go/bin/gaiacli /Users/oak/go/bin/35gaiacli
 
 
 build: go.sum

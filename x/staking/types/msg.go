@@ -152,7 +152,7 @@ func (msg MsgCreateValidator) ValidateBasic() sdk.Error {
 // MsgEditValidator - struct for editing a validator
 type MsgEditValidator struct {
 	//Description
-	Description       Description    `json:"description"`
+	Description
 
 	ValidatorAddress sdk.ValAddress `json:"address"`
 
