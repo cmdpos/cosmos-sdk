@@ -17,7 +17,7 @@ const (
 	Bonded    BondStatus = 0x02
 
 	// default bond denomination
-	DefaultBondDenom = "stake"
+	DefaultBondDenom = "neva" // cmdpos
 
 	// Delay, in blocks, between when validator updates are returned to Tendermint and when they are applied.
 	// For example, if this is 0, the validator set at the end of a block will sign the next block, or
@@ -46,7 +46,7 @@ func (b BondStatus) String() string {
 }
 
 // PowerReduction is the amount of staking tokens required for 1 unit of Tendermint power
-var PowerReduction = NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(6), nil))
+var PowerReduction = NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(9), nil)) //cmdpos
 
 // TokensToTendermintPower - convert input tokens to potential tendermint power
 func TokensToTendermintPower(tokens Int) int64 {

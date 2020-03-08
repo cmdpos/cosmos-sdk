@@ -24,13 +24,13 @@ func Test_runConfigCmdTwiceWithShorterNodeValue(t *testing.T) {
 	cmd := ConfigCmd(configHome)
 	assert.NotNil(t, cmd)
 
-	err := cmd.RunE(cmd, []string{"node", "tcp://localhost:26657"})
+	err := cmd.RunE(cmd, []string{"node", "tcp://localhost:20181"})
 	assert.Nil(t, err)
 
 	err = cmd.RunE(cmd, []string{"node", "--get"})
 	assert.Nil(t, err)
 
-	err = cmd.RunE(cmd, []string{"node", "tcp://local:26657"})
+	err = cmd.RunE(cmd, []string{"node", "tcp://local:20181"})
 	assert.Nil(t, err)
 
 	err = cmd.RunE(cmd, []string{"node", "--get"})

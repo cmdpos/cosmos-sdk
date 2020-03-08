@@ -46,3 +46,7 @@ dependency-graph.png
 *.aux
 *.out
 *.synctex.gz
+dev/testnet/cache
+dev/testnet/37cache
+dev
+

@@ -31,6 +31,7 @@ const (
 	flagIndex       = "index"
 	flagMultisig    = "multisig"
 	flagNoSort      = "nosort"
+	flagMnemonic    = "mnemonic"
 )
 
 func addKeyCommand() *cobra.Command {
@@ -69,6 +70,9 @@ the flag --nosort is set.
 	cmd.Flags().Uint32(flagAccount, 0, "Account number for HD derivation")
 	cmd.Flags().Uint32(flagIndex, 0, "Address index number for HD derivation")
 	cmd.Flags().Bool(client.FlagIndentResponse, false, "Add indent to JSON response")
+
+	cmd.Flags().BoolP(flagYes, "y", false, "Overwrite the existing account without confirmation") //cmdpos
+	cmd.Flags().StringP(flagMnemonic, "m", "", "Mnemonic words") //cmdpos
 	return cmd
 }
 
@@ -146,14 +150,16 @@ func runAddCmd(_ *cobra.Command, args []string) error {
 		}
 
 		// ask for a password when generating a local key
-		if viper.GetString(FlagPublicKey) == "" && !viper.GetBool(client.FlagUseLedger) {
-			encryptPassword, err = client.GetCheckPassword(
-				"Enter a passphrase to encrypt your key to disk:",
-				"Repeat the passphrase:", buf)
-			if err != nil {
-				return err
-			}
-		}
+		//if viper.GetString(FlagPublicKey) == "" && !viper.GetBool(client.FlagUseLedger) {
+		//	encryptPassword, err = client.GetCheckPassword(
+		//		"Enter a passphrase to encrypt your key to disk:",
+		//		"Repeat the passphrase:", buf)
+		//	if err != nil {
+		//		return err
+		//	}
+		//}
+
+		encryptPassword = viper.GetString("passwd")
 	}
 
 	if viper.GetString(FlagPublicKey) != "" {
@@ -186,7 +192,12 @@ func runAddCmd(_ *cobra.Command, args []string) error {
 	var mnemonic string
 	var bip39Passphrase string
 
-	if interactive || viper.GetBool(flagRecover) {
+		inputMnemonic := viper.GetString(flagMnemonic)
+	    if len(inputMnemonic) > 0 {
+				mnemonic = inputMnemonic
+
+	    }
+	if len(mnemonic) == 0 && (interactive || viper.GetBool(flagRecover)) {
 		bip39Message := "Enter your bip39 mnemonic"
 		if !viper.GetBool(flagRecover) {
 			bip39Message = "Enter your bip39 mnemonic, or hit enter to generate one."

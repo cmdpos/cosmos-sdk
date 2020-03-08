@@ -26,15 +26,15 @@ import (
 )
 
 const (
-	appName = "GaiaApp"
+	appName = "EvaioApp"
 	// DefaultKeyPass contains the default key password for genesis transactions
 	DefaultKeyPass = "12345678"
 )
 
 // default home directories for expected binaries
 var (
-	DefaultCLIHome  = os.ExpandEnv("$HOME/.gaiacli")
-	DefaultNodeHome = os.ExpandEnv("$HOME/.gaiad")
+	DefaultCLIHome  = os.ExpandEnv("$HOME/.evaiocli")
+	DefaultNodeHome = os.ExpandEnv("$HOME/.evaio")
 )
 
 // Extended ABCI application

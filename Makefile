@@ -7,8 +7,8 @@ LEDGER_ENABLED ?= true
 GOBIN ?= $(GOPATH)/bin
 GOSUM := $(shell which gosum)
 
-export GO111MODULE = on
-
+export GO111MODULE = off
+LEDGER_ENABLED=false
 # process build tags
 
 build_tags = netgo
@@ -72,6 +72,11 @@ ci: tools install test_cover lint test
 ########################################
 ### Build/Install
 
+install: update_gaia_lite_docs
+	go install $(BUILD_FLAGS) ./cmd/gaia/cmd/evaio
+	go install $(BUILD_FLAGS) ./cmd/gaia/cmd/evaiocli
+
+
 build: go.sum
 ifeq ($(OS),Windows_NT)
 	go build -mod=readonly $(BUILD_FLAGS) -o build/gaiad.exe ./cmd/gaia/cmd/gaiad
@@ -89,7 +94,7 @@ build-linux: go.sum
 update_gaia_lite_docs:
 	@statik -src=client/lcd/swagger-ui -dest=client/lcd -f
 
-install: go.sum check-ledger update_gaia_lite_docs
+install3: go.sum check-ledger update_gaia_lite_docs
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/gaia/cmd/gaiad
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/gaia/cmd/gaiacli
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/gaia/cmd/gaiareplay

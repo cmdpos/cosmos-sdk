@@ -19,9 +19,9 @@ const (
 )
 
 var configDefaults = map[string]string{
-	"chain-id":       "",
+	"chain-id":       "evaio",
 	"output":         "text",
-	"node":           "tcp://localhost:26657",
+	"node":           "tcp://localhost:20181",
 	"broadcast-mode": "sync",
 }
 
@@ -30,7 +30,7 @@ var configDefaults = map[string]string{
 func ConfigCmd(defaultCLIHome string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "config <key> [value]",
-		Short: "Create or query a Gaia CLI configuration file",
+		Short: "Create or query a Evaio CLI configuration file",
 		RunE:  runConfigCmd,
 		Args:  cobra.RangeArgs(0, 2),
 	}

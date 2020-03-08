@@ -83,7 +83,7 @@ paths:
                 type: string
               listen_addr:
                 type: string
-                example: 192.168.56.1:26656
+                example: 192.168.56.1:20180
               version:
                 description: Tendermint version
                 type: string
@@ -97,7 +97,7 @@ paths:
                     example: on
                   rpc_address:
                     type: string
-                    example: tcp://0.0.0.0:26657
+                    example: tcp://0.0.0.0:20181
         500:
           description: Failed to query node status
   /syncing:

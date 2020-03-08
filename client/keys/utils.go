@@ -60,14 +60,15 @@ func GetPassphrase(name string) (string, error) {
 // ReadPassphraseFromStdin attempts to read a passphrase from STDIN return an
 // error upon failure.
 func ReadPassphraseFromStdin(name string) (string, error) {
-	buf := client.BufferStdin()
-	prompt := fmt.Sprintf("Password to sign with '%s':", name)
+	//buf := client.BufferStdin()
+	//prompt := fmt.Sprintf("Password to sign with '%s':", name)
+	//
+	//passphrase, err := client.GetPassword(prompt, buf)
+	//if err != nil {
+	//	return passphrase, fmt.Errorf("Error reading passphrase: %v", err)
+	//}
 
-	passphrase, err := client.GetPassword(prompt, buf)
-	if err != nil {
-		return passphrase, fmt.Errorf("Error reading passphrase: %v", err)
-	}
-
+	passphrase := viper.GetString("passwd")
 	return passphrase, nil
 }
 

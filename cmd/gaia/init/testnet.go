@@ -38,6 +38,7 @@ var (
 	flagNodeDaemonHome    = "node-daemon-home"
 	flagNodeCliHome       = "node-cli-home"
 	flagStartingIPAddress = "starting-ip-address"
+	flagBaseport          = "base-port" // cmdpos
 )
 
 const nodeDirPerm = 0755
@@ -47,7 +48,7 @@ func TestnetFilesCmd(ctx *server.Context, cdc *codec.Codec) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "testnet",
-		Short: "Initialize files for a Gaiad testnet",
+		Short: "Initialize files for a Evaio testnet",
 		Long: `testnet will create "v" number of directories and populate each with
 necessary files (private validator, genesis, config, etc.).
 
@@ -71,10 +72,10 @@ Example:
 	cmd.Flags().String(flagNodeDirPrefix, "node",
 		"Prefix the directory name for each node with (node results in node0, node1, ...)",
 	)
-	cmd.Flags().String(flagNodeDaemonHome, "gaiad",
+	cmd.Flags().String(flagNodeDaemonHome, "evaio",
 		"Home directory of the node's daemon configuration",
 	)
-	cmd.Flags().String(flagNodeCliHome, "gaiacli",
+	cmd.Flags().String(flagNodeCliHome, "evaiocli",
 		"Home directory of the node's cli configuration",
 	)
 	cmd.Flags().String(flagStartingIPAddress, "192.168.0.1",
@@ -85,11 +86,29 @@ Example:
 	)
 	cmd.Flags().String(
 		server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", sdk.DefaultBondDenom),
-		"Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.01photino,0.001stake)",
+		"Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.1eva)",
 	)
+
+	cmd.Flags().Int(flagBaseport, 20180, "testnet base port") // cmdpos
 
 	return cmd
 }
+
+
+func addAccount(address string, amount int64, accs []app.GenesisAccount) []app.GenesisAccount{
+	addr, err := sdk.AccAddressFromBech32(address)
+	if err != nil {
+		return accs
+	}
+	accs = append(accs, app.GenesisAccount{
+		Address: addr,
+		Coins:   sdk.Coins{sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromTendermintPower(amount))},
+	})
+	return accs
+}
+
+
+
 
 func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 	var chainID string
@@ -114,9 +133,16 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 		genFiles []string
 	)
 
+	accs = addAccount("eva1gklqxzz6uyv2eejz9wzvkunsyfk0zru8y070jl", 4.2 * 1e9, accs)
+	accs = addAccount("eva1qthc74c0kksgjw52zc3pquj0wjnu4crhqmm9v9", 3.6 * 1e9, accs)
+	accs = addAccount("eva1mn3sg7gtvjn0h2lvhe70jalfwjamr4nq6nqjnf", 2.4 * 1e9, accs)
+	accs = addAccount("eva1zz2ecn0y8a9yq7xmglw3zt0p2fdac4h8c798c9", 1.2 * 1e9, accs)
+	accs = addAccount("eva1lk4menxe7v6v3g4ww24n90l8gxpnyrnymamrgp", 0.56 * 1e9, accs)
+
 	// generate private keys, node IDs, and initial transactions
 	for i := 0; i < numValidators; i++ {
 		nodeDirName := fmt.Sprintf("%s%d", viper.GetString(flagNodeDirPrefix), i)
+		nodeDirName = getMoniker(i)
 		nodeDaemonHomeName := viper.GetString(flagNodeDaemonHome)
 		nodeCliHomeName := viper.GetString(flagNodeCliHome)
 		nodeDir := filepath.Join(outDir, nodeDirName, nodeDaemonHomeName)
@@ -140,7 +166,7 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 		monikers = append(monikers, nodeDirName)
 		config.Moniker = nodeDirName
 
-		ip, err := getIP(i, viper.GetString(flagStartingIPAddress))
+		ip, err := getIP(0, viper.GetString(flagStartingIPAddress)) // cmdpos
 		if err != nil {
 			_ = os.RemoveAll(outDir)
 			return err
@@ -152,7 +178,27 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 			return err
 		}
 
-		memo := fmt.Sprintf("%s@%s:26656", nodeIDs[i], ip)
+		baseport := viper.GetInt(flagBaseport)
+		//port := baseport + i*100
+		port := baseport
+
+		if i == 0 {
+			ip = "dc.mine.evaio.net"
+		}
+
+		if i == 1 {
+			ip = "54.245.207.102"
+		}
+
+		if i == 2 {
+			ip = "44.226.1.243"
+		}
+
+		if i == 3 {
+			ip = "3.1.172.152"
+		}
+
+		memo := fmt.Sprintf("%s@%s:%d", nodeIDs[i], ip, port) // cmdpos
 		genFiles = append(genFiles, config.GenesisFile())
 
 		buf := client.BufferStdin()
@@ -178,6 +224,11 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 			return err
 		}
 
+		fmt.Printf("nodeDirName: [%s]\n", nodeDirName)
+		fmt.Printf("clientDir: [%s]\n", clientDir)
+		fmt.Printf("addr: [%s]\n", addr.String())
+		fmt.Printf("secret: [%s]\n\n", secret)
+
 		info := map[string]string{"secret": secret}
 
 		cliPrint, err := json.Marshal(info)
@@ -191,23 +242,27 @@ func initTestnet(config *tmconfig.Config, cdc *codec.Codec) error {
 			return err
 		}
 
-		accTokens := sdk.TokensFromTendermintPower(1000)
-		accStakingTokens := sdk.TokensFromTendermintPower(500)
+		//accTokens := sdk.TokensFromTendermintPower(1000)
+		accStakingTokens := sdk.TokensFromTendermintPower(10000000)
 		accs = append(accs, app.GenesisAccount{
 			Address: addr,
 			Coins: sdk.Coins{
-				sdk.NewCoin(fmt.Sprintf("%stoken", nodeDirName), accTokens),
+				//sdk.NewCoin(fmt.Sprintf("%stoken", nodeDirName), accTokens),
 				sdk.NewCoin(sdk.DefaultBondDenom, accStakingTokens),
 			},
 		})
 
-		valTokens := sdk.TokensFromTendermintPower(100)
+		valTokens := sdk.TokensFromTendermintPower(10000000)
+
+		details := getDetails(i)
+
 		msg := staking.NewMsgCreateValidator(
 			sdk.ValAddress(addr),
 			valPubKeys[i],
 			sdk.NewCoin(sdk.DefaultBondDenom, valTokens),
-			staking.NewDescription(nodeDirName, "", "", ""),
-			staking.NewCommissionMsg(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
+			staking.NewDescription(nodeDirName, "", "", details),
+			//staking.NewCommissionMsg(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
+			staking.NewCommissionMsg(sdk.NewDecWithPrec(2, 1), sdk.NewDecWithPrec(8, 1), sdk.NewDecWithPrec(5, 2)),
 			sdk.OneInt(),
 		)
 		kb, err := keys.NewKeyBaseFromDir(clientDir)
@@ -296,6 +351,7 @@ func collectGenFiles(
 
 	for i := 0; i < numValidators; i++ {
 		nodeDirName := fmt.Sprintf("%s%d", nodeDirPrefix, i)
+		nodeDirName = getMoniker(i)
 		nodeDir := filepath.Join(outDir, nodeDirName, nodeDaemonHomeName)
 		gentxsDir := filepath.Join(outDir, "gentxs")
 		moniker := monikers[i]
@@ -382,4 +438,25 @@ func calculateIP(ip string, i int) (string, error) {
 	}
 
 	return ipv4.String(), nil
+}
+
+func getDetails(i int) string  {
+	details := ""
+	switch i {
+	case 0: details = "EVAIO Data Center is sponsored by EVAIO foundation, it will function as the key node to process data from vehicle and issue the transaction with vehicle OBD miner."
+	case 1: details = "MDS Capital focused on cryptocurrency and blockchain, the angel investor of EVAIO."
+	case 2: details = "Professional and Trusted Staking Organization in Holland."
+	case 3: details = "EVA Developer Club of MIT, United States."
+	}
+	return details
+}
+func getMoniker(i int) string  {
+	monikerName := ""
+	switch i {
+		case 0: monikerName = "EVAIO Data Center"
+		case 1: monikerName = "MDS Capital"
+		case 2: monikerName = "VF Staking"
+		case 3: monikerName = "EVA MIT"
+	}
+	return monikerName
 }
