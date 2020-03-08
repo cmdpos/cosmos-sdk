@@ -4,9 +4,9 @@
 index=0
 
 /killbyname.sh gaiad
-35gaiad export --for-zero-height  --home cache/node${index}/gaiad > 36.json
+35gaiad export --for-zero-height  --home cache/node${index}/gaiad > 35.json
 
-37gaiad migrate v0.36 36.json | jq > 37.json
+37gaiad migrate v0.36 35.json | jq > 37.json
 
 rm -rf 37cache
 cp -rf cache 37cache
