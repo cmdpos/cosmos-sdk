@@ -192,8 +192,13 @@ func processSig(
 		return nil, res
 	}
 
+	//if !simulate && !pubKey.VerifyBytes(signBytes, sig.Signature) {
+	//	return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+	//}
 	if !simulate && !pubKey.VerifyBytes(signBytes, sig.Signature) {
-		return nil, sdk.ErrUnauthorized("signature verification failed; verify correct account sequence and chain-id").Result()
+		return nil, sdk.ErrUnauthorized("signature verification failed; " +
+			"verify correct account sequence, chain-id and message format. " +
+			"Expected message format: " + string(signBytes)).Result()
 	}
 
 	if err := acc.SetSequence(acc.GetSequence() + 1); err != nil {
